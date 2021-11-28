@@ -6,7 +6,6 @@
 // via this link https://www.mikroe.com/mikroc-pic
 
 
-
 sbit LCD_RS at  RB0_bit;   //lcd reset
 sbit LCD_EN at  RB2_bit;  // lcd enanble
 sbit LCD_D4 at  RB4_bit;    //Data
@@ -38,20 +37,20 @@ for(i=0;i<16;i++)
 {
 Lcd_Cmd(_LCD_SHIFT_RIGHT);
 Lcd_Out(1,1,"Oreoluwa");
-Delay_ms(50);
+Delay_ms(50); //causes a delay
 }
 for(i=0;i<16;i++)
 {
 Lcd_Cmd(_LCD_SHIFT_LEFT);
 Lcd_Out(1,1,"17CE023397");
-Delay_ms(50);
+Delay_ms(50); //causes a delay
 }
 
 
-while(1){
+while(1){ // the code is loop bacause input may enter at anytimes , therefore running it once may not read the input after the first switch state
 if(PORTA==0x04)
 {
-Lcd_Cmd(_LCD_CLEAR);
+Lcd_Cmd(_LCD_CLEAR); // clears the characters on the LCD prior to this state
 Lcd_Out(1,1,"ON");
 Delay_ms(500);
 }
