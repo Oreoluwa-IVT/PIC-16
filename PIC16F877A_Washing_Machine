@@ -1,0 +1,65 @@
+//The Real Stuff 
+// Eng Ruyi's Class
+// This Code Triggers a Washing machine to spin using an Interrupt on PORTB. 
+// Once the push button is pressed, the interrupt is pressed and a 2 Digit 7 segment display counts down 97seconds
+#define _XTAL_FREQ 20000000
+#include <xc.h>
+#pragma config FOSC = HS        // Oscillator Selection bits (HS oscillator)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled)
+#pragma config PWRTE = ON       // Power-up Timer Enable bit (PWRT enabled)
+#pragma config BOREN = ON       // Brown-out Reset Enable bit (BOR enabled)
+#pragma config LVP = OFF        // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
+#pragma config CPD = OFF        // Data EEPROM Memory Code Protection bit (Data EEPROM code protection off)
+#pragma config WRT = OFF        // Flash Program Memory Write Enable bits (Write protection off; all program memory may be written to by EECON control)
+#pragma config CP = OFF         // Flash Program Memory Code Protection bit (Code protection off)
+
+
+void interrupt ISR_example()
+{
+        if(INTF==1) //External Interrupt detected
+        { 
+     int i;
+
+      PORTD=0xFF;
+      unsigned char binary_pattern[]={0x7F,0x07,0x7D,0x6D,0x66,0x4F,0x5B,0x06,0x3F};
+      PORTBbits.RB5  = 0; //DIGITPIN 1 "RB5" is set as an input
+      PORTBbits.RB6  = 0; 
+      TRISBbits.TRISB5    = 0;
+      TRISBbits.TRISB6       = 0;
+      TRISC = 0x00; //define PORTC as a output pin
+      for (int j=0;j<98;j++)
+        {
+           // PORTC = binary_pattern[j];
+            __delay_ms(4);  //add delay of one second
+      PORTBbits.RB5  = 1; 
+      PORTC = binary_pattern[j%10u];
+      PORTBbits.RB6  = 0; 
+     __delay_ms(3);
+     PORTBbits.RB6  = 1; 
+     PORTC = binary_pattern[(j/10)%10u];
+     PORTBbits.RB5  = 0; 
+     __delay_ms(3);
+        }
+      PORTC=0x00; //the ports can either be low or high , using 1 and 0
+      PORTD=0x00;
+  // unsigned char binary_pattern[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F};assending
+      INTF = 0; 
+     }
+  
+     }
+
+   // clear the interrupt flag after done with it
+
+
+void main(void)
+ {
+   // Write your code here
+    TRISD = 0x00; //PORTD declared as output for interfacing Motor
+    TRISB0 = 1;        //DEfine the RB0 pin as input to use as interrupt pin
+    OPTION_REG = 0b00000000;  // Enables PULL UPs
+    GIE=1;          //Enable Global Interrupt
+    PEIE=1;         //Enable the Peripheral Interrupt
+    INTE = 1;       //This line enables RB0 as external Interrupt pin
+    PORTD=0x00;
+   while (1);
+ }
