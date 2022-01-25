@@ -1,4 +1,4 @@
-//The Real Stuff 
+//The Real Stuff : Oluwafemi Oreoluwa 
 // Eng Ruyi's Class
 // This Code Triggers a Washing machine to spin using an Interrupt on PORTB. 
 // Once the push button is pressed, the interrupt is pressed and a 2 Digit 7 segment display counts down 97seconds
@@ -60,6 +60,6 @@ void main(void)
     GIE=1;          //Enable Global Interrupt
     PEIE=1;         //Enable the Peripheral Interrupt
     INTE = 1;       //This line enables RB0 as external Interrupt pin
-    PORTD=0x00;
+    PORTD=0x00;   //The Machine Motor is set to be inactive until an interrupt occurs 
    while (1);
  }
