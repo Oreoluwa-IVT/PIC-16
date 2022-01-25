@@ -1,0 +1,20 @@
+// Eng Ruyi's Class -7 Segment Display
+#define _XTAL_FREQ 20000000
+
+#include <xc.h>
+
+void main(void)
+ {
+     unsigned char binary_pattern[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F};
+     TRISB = 0x00; 
+      for (int j=0;j<9;j++)
+        {
+            PORTB = binary_pattern[j];
+            __delay_ms(100);  //add delay of one second
+        }
+   while (1)
+      ;
+ }
+
+
+ 
